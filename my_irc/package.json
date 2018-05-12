@@ -1,0 +1,28 @@
+{
+    "name": "my_irc",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "body-parser": "^1.18.2",
+        "mongodb": "^3.0.8",
+        "mongoose": "^5.1.0",
+        "react": "^16.3.2",
+        "react-dom": "^16.3.2",
+        "react-scripts": "1.1.4"
+    },
+    "scripts": {
+        "start": "concurrently 'npm run react' 'npm run server'",
+        "react": "react-scripts start",
+        "server": "nodemon src/server/index.js",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject"
+    },
+    "devDependencies": {
+        "concurrently": "^3.5.1",
+        "express": "^4.16.3",
+        "nodemon": "^1.17.4",
+        "socket.io": "^2.1.0",
+        "uuid": "^3.2.1"
+    }
+}
