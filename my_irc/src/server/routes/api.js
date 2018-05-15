@@ -1,18 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const Channel = require('../models/channels');
+const Channel = require("../models/channels");
 
 // Create new channels to DB
 router.post("/channels", function(req, res, next) {
-    Channel.create(req.body).then(function(channel){
-        res.send(channel);
-    }).catch(next)
+    Channel.create(req.body)
+        .then(function(channel) {
+            res.send(channel);
+        })
+        .catch(next);
 });
 // Read list of channels from DB
 router.get("/channels", function(req, res, next) {
-    Channel.find({}).then(function(channel){
+    Channel.find({}).then(function(channel) {
         res.send(channels);
-    })
+    });
 });
 // Update channel from DB
 router.put("/channels/:id", function(req, res, next) {
@@ -20,7 +22,7 @@ router.put("/channels/:id", function(req, res, next) {
 });
 // Delete channel from DB
 router.delete("/channels/:id", function(req, res, next) {
-    Channel.findByIdAndRemove({_id:req.params.id}).then(function(channel){
+    Channel.findByIdAndRemove({ _id: req.params.id }).then(function(channel) {
         res.send(channel);
     });
 });
