@@ -9,7 +9,7 @@ export default class ChatForm extends React.Component {
         this.state = {
             message: "",
             name: "",
-            channels: []
+            channels: "general"
         };
 
         this.handleChangeName = this.handleChangeName.bind(this);
@@ -30,13 +30,29 @@ export default class ChatForm extends React.Component {
     }
 
     handleSubmit(event) {
-        const socket = io(socketUrl);
+        event.preventDefault();
+        const socket = this.props.socket;
 
         let arg = this.state.message.split(" ");
 
-        socket.emit("message", this.state.message, this.state.name);
-        console.log(event);
-        event.preventDefault();
+        if (arg[0] == "/join") {
+            socket.emit("unsubscribe", this.state.channels);
+            this.setState({ channels: arg[1] });
+            socket.emit("subscribe", arg[1]);
+        } else if (arg[0] == "/leave") {
+            console.log(this.state.channels);
+            socket.emit("unsubscribe", this.state.channels);
+            this.setState({ channels: "general" });
+        } else {
+            socket.emit(
+                "message",
+                this.state.message,
+                this.state.name,
+                this.state.channels
+            );
+        }
+
+        console.log(this.state.channels);
         this.setState({ message: "" });
         return false;
     }
@@ -44,23 +60,28 @@ export default class ChatForm extends React.Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <label>
-                    Nickname:
-                    <input
-                        type="text"
-                        value={this.state.name}
-                        onChange={this.handleChangeName}
-                    />
-                </label>
-                <label>
-                    Message:
-                    <input
-                        type="text"
-                        value={this.state.message}
-                        onChange={this.handleChange}
-                    />
-                </label>
-                <input type="submit" value="Submit" />
+                <div className="form-group">
+                    <label>
+                        Nickname:
+                        <input
+                            className="form-control"
+                            type="text"
+                            value={this.state.name}
+                            onChange={this.handleChangeName}
+                        />
+                    </label>
+
+                    <label>
+                        Message:
+                        <input
+                            className="form-control"
+                            type="text"
+                            value={this.state.message}
+                            onChange={this.handleChange}
+                        />
+                    </label>
+                </div>
+                <input type="submit" value="Submit" className="btn btn-dark" />
             </form>
         );
     }

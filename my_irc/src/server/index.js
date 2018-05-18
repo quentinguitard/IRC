@@ -29,24 +29,37 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 app.use("/", express.static("public"));
-io.on("connection", socket => {
+io.on("connection", function(socket) {
     console.log("User connected", "socket ID :" + socket.id);
-
+    socket.join("general");
     socket.on("disconnect", () => {
         console.log("user disconnected");
     });
 
-    socket.on("message", function(msg, name) {
+    socket.on("subscribe", function(room) {
+        console.log(room);
+        socket.leave("general");
+        socket.join(room, function() {
+            console.log(socket.rooms);
+        });
+    });
+
+    socket.on("unsubscribe", function(room) {
+        socket.leave(room);
+        socket.join("general");
+        console.log(socket.rooms, "unsub");
+    });
+
+    socket.on("message", function(msg, name, room) {
         let arg = msg.split(" ");
 
-        if (arg[0] == "/join") {
-            console.log("im in /join " + arg[1]);
-            socket.join(arg[1]);
-            io.to(arg[1]).emit("message", msg, name);
-        } else {
-            console.log("message: " + msg + " " + name);
-            io.emit("message", msg, name);
-        }
+        // if (arg[0] == "/join") {
+        //     console.log("im in /join " + arg[1]);
+        //     socket.join(arg[1]);
+        // }
+        console.log(socket.rooms);
+        console.log("message: " + msg + " " + name + " room " + room);
+        io.to(room).emit("message", msg, name);
     });
 });
 

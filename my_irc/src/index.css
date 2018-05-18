@@ -1,5 +1,16 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+#root {
+    height: 80vh;
+    width: 80vw;
+    margin: auto;
+}
+.chat-output {
+    height: 60vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
