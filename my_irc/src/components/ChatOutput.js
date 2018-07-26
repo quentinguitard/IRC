@@ -39,11 +39,6 @@ export default class ChatOutput extends React.Component {
                     }
                 ]
             });
-            //console.log(self.state.output);
-            // self.setState({
-            //     message: msg,
-            //     name: name
-            // });
         });
     }
 

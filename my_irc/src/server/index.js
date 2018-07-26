@@ -53,10 +53,6 @@ io.on("connection", function(socket) {
     socket.on("message", function(msg, name, room) {
         let arg = msg.split(" ");
 
-        // if (arg[0] == "/join") {
-        //     console.log("im in /join " + arg[1]);
-        //     socket.join(arg[1]);
-        // }
         console.log(socket.rooms);
         console.log("message: " + msg + " " + name + " room " + room);
         io.to(room).emit("message", msg, name);
